@@ -18,6 +18,22 @@
   ],
   "paths": {
     "/user": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get users",
+        "description": "Get users list",
+        "operationId": "usersList",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      },
       "post": {
         "tags": [
           "user"
@@ -45,6 +61,66 @@
           }
         }
       }
+    },
+    "/user/{userId}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "User detail",
+        "description": "Find user with provided id",
+        "operationId": "getUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User found",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Login user",
+        "description": "Authenticate user credentials to provide application access",
+        "operationId": "login",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Auth"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully logged"
+          },
+          "400": {
+            "description": "Access denied, check credentials"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -54,6 +130,17 @@
         "id": {
           "type": "string"
         },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "Auth": {
+      "type": "object",
+      "properties": {
         "username": {
           "type": "string"
         },
