@@ -5,31 +5,37 @@ const Controller = require('./index');
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', listUsers);
+router.get('/:id', userDetail);
+router.post('/', upsert);
+router.put('/', upsert);
+
+
+async function listUsers(req, res) {
     try {
         const list = await Controller.list();
         response.success(req, res, list, 200);
     } catch (error) {
         response.error(req, res, error.message, 500);
     }
-});
+};
 
-router.get('/:id', async (req, res) => {
+async function userDetail(req, res) {
     try {
         const user = await Controller.get(req.params.id);
         response.success(req, res, user, 200);
     } catch (error) {
         response.error(req, res, error.message, 500);
     }
-});
+};
 
-// router.get('/gatitos', function (req, res) {
-//     res.send('Aqui estan los michis')
-// })
+async function upsert(req, res) {
+    try {
+        const user = await Controller.upsert(req.body);
+        response.success(req, res, user, 201)
+    } catch (error) {
+        response.error(req, res, error.message, 500);
+    }
+}
 
 module.exports = router;
-
-// router.get('/perritos', function (req, res) {
-//     res.send('Aqui están los perritos')
-// });
-
