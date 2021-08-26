@@ -14,7 +14,12 @@ async function get (tabla, id) {
 }
 
 async function upsert (tabla, data) {
-    db[collection].push(data);
+    if (!db[tabla]) {
+        db[tabla] = [];  // create "table" if not exists
+    }
+
+    db[tabla].push(data);
+    console.log('La data ', db)
 }
 
 async function remove (tabla, id) {

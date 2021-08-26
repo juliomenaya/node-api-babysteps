@@ -32,7 +32,7 @@ async function userDetail(req, res) {
 async function upsert(req, res) {
     try {
         const user = await Controller.upsert(req.body);
-        response.success(req, res, user, 201)
+        response.success(req, res, user, 201);
     } catch (error) {
         response.error(req, res, error.message, 500);
     }
