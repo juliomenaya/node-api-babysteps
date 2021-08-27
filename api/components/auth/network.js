@@ -14,8 +14,6 @@ async function login(req, res) {
     } catch (error) {
         response.error(req, res, 'Access denied', 400);
     }
-    
-
 }
 
 module.exports = router;

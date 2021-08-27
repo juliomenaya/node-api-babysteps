@@ -8,8 +8,9 @@ const router = express.Router();
 
 router.get('/', listUsers);
 router.get('/:id', userDetail);
-router.post('/', upsert);
-router.put('/', secure('update'), upsert);
+router.post('/', insert);
+router.put('/', secure('update'), update);
+router.post('/follow/:id', secure('follow'), follow);
 
 
 async function listUsers(req, res) {
@@ -30,13 +31,34 @@ async function userDetail(req, res) {
     }
 };
 
-async function upsert(req, res) {
+async function insert(req, res) {
     try {
-        const user = await Controller.upsert(req.body);
+        const user = await Controller.insert(req.body);
         response.success(req, res, user, 201);
     } catch (error) {
         response.error(req, res, error.message, 500);
     }
+}
+
+async function update(req, res) {
+    try {
+        const user = await Controller.update(req.body);
+        response.success(req, res, user, 201);
+    } catch (error) {
+        response.error(req, res, error.message, 500);
+    }
+}
+
+async function follow(req, res, next) {
+    try {
+        const follow = await Controller.follow(
+            req.user.id, req.params.id
+        );
+        response.success(req, res, follow, 201);
+    } catch (error) {
+        response.error(req, res, error.message, 500);
+    }
+
 }
 
 module.exports = router;

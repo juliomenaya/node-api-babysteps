@@ -19,6 +19,13 @@ const check = {
         if (tokendecoded.id !== owner) {
             throw error('You do not have permission to perform this action', 401);
         }
+    },
+    logged: function(req, owner) {
+        const tokendecoded = decodeHeader(req);
+
+        // if (tokendecoded.id !== owner) {
+        //     throw error('You do not have permission to perform this action', 401);
+        // }
     }
 };
 
