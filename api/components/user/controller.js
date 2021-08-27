@@ -3,10 +3,6 @@ const auth = require('../auth');
 
 const TABLE = 'user';
 
-// function list () {
-//     return store.list(TABLA);
-// }
-
 module.exports = function (injectedStore) {
     let store = injectedStore;
     if (!store) {
@@ -14,11 +10,11 @@ module.exports = function (injectedStore) {
     }
 
     function list() {
-        return store.list(TABLA);
+        return store.list(TABLE);
     }
 
     function get(id) {
-        return store.get(TABLA, id);
+        return store.get(TABLE, { id });
     }
 
     async function insert(body) {
@@ -65,34 +61,27 @@ module.exports = function (injectedStore) {
         );
     }
 
-    // async function upsert(body) {
-    //     const user = {
-    //         name: body.name,
-    //         username: body.username,
-    //     }
+    async function following(userId) {
+        const join = {};
+        join[TABLE] = 'user_to';
+        const query = { user_from: userId };
+        return await store.query(TABLE + '_follow', query, join);
+    }
 
-    //     if (body.id) {
-    //         user.id = body.id;
-    //     } else {
-    //         user.id = nanoid();
-    //     }
-
-    //     if (body.password || body.username) {
-    //         await auth.upsert({
-    //             id: user.id,
-    //             username: user.username,
-    //             password: body.password
-    //         });
-    //     }
-
-    //     return store.upsert(TABLA, user);
-    // }
+    async function followers(userId) {
+        const join = {};
+        join[TABLE] = 'user_from';
+        const query = { user_to: userId };
+        return await store.query(TABLE + '_follow', query, join);
+    }
 
     return {
         list,
         get,
         insert,
         update,
-        follow
+        follow,
+        following,
+        followers
     };
 };

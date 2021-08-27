@@ -7,6 +7,8 @@ const Controller = require('./index');
 const router = express.Router();
 
 router.get('/', listUsers);
+router.get('/:id/following', following);
+router.get('/:id/followers', followers);
 router.get('/:id', userDetail);
 router.post('/', insert);
 router.put('/', secure('update'), update);
@@ -55,6 +57,27 @@ async function follow(req, res, next) {
             req.user.id, req.params.id
         );
         response.success(req, res, follow, 201);
+    } catch (error) {
+        response.error(req, res, error.message, 500);
+    }
+
+}
+
+async function following(req, res, next) {
+    try {
+        const followings = await Controller.following(req.params.id);
+        response.success(req, res, followings, 201);
+    } catch (error) {
+        response.error(req, res, error.message, 500);
+    }
+
+}
+
+
+async function followers(req, res, next) {
+    try {
+        const followers = await Controller.followers(req.params.id);
+        response.success(req, res, followers, 201);
     } catch (error) {
         response.error(req, res, error.message, 500);
     }
