@@ -22,7 +22,6 @@ function createRemoteDB(host, port) {
             }, (err, req, body) => {
                 if (err) {
                     console.log('Error con la base de datos remota');
-                    console.log(err)
                     return reject(err.message);
                 }
 
