@@ -7,6 +7,15 @@ const client = redis.createClient({
     port: config.redis.port
 });
 
+function list(key) {
+    return new Promise((resolve, reject) => {
+        client.get(key, (err, data) => {
+            if (err) return reject(err);
+
+            resolve(data ? JSON.parse(data) : null);
+        })
+    })
+}
 
 async function get(key) {
     try {
