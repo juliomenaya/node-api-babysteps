@@ -1,6 +1,17 @@
 const dotenv = require('dotenv').config();
 
+const isTruthy = value => {
+    if (value === 'TRUE') {
+        return true;
+    }
+    if (value === 'FALSE') {
+        return false;
+    }
+    throw new Error('Could not determine if value is truthy ', value);
+}
+
 module.exports = {
+    remoteDB: isTruthy(process.env.REMOTE_DB) || false,
     api: {
         port: process.env.API_PORT || 3000,
     },
